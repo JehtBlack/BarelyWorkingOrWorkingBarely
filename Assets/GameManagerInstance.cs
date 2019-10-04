@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // Wrapper for locked data/delegates, data that can only be accessed if the dependency is unlocked in the GameManagerInstance
 public abstract class DependsOn {
@@ -19,21 +20,24 @@ public abstract class DependsOn {
 }
 
 public class ValDependsOn<Value> : DependsOn where Value : struct {
-    private Nullable<Value> WrappedValue;
+    public Value? WrappedValue {
+        get { return IsAvailable() ? WrappedValue : null; }
+        set { WrappedValue = value; }
+    }
 
-    public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) { }
-    public Nullable<Value> GetValue() {
-        return IsAvailable() ? WrappedValue : null;
+    public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
+        WrappedValue = null;
     }
 }
 
 public class RefDependsOn<Value> : DependsOn where Value : class {
-    private Value WrappedValue;
+    public Value WrappedValue {
+        get { return IsAvailable() ? WrappedValue : null; }
+        set { WrappedValue = value; }
+    }
 
-    public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) { }
-
-    public Value GeValue() {
-        return IsAvailable() ? WrappedValue : null;
+    public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
+        WrappedValue = null;
     }
 }
 
