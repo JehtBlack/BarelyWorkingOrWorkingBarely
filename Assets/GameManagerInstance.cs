@@ -3,10 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Wrapper for locked data/delegates, data that can only be accessed if the dependency is unlocked in the GameManagerInstance
+public abstract class DependsOn {
+
+    private GameManagerInstance.UnlockStateID Dependency;
+    
+    private DependsOn() { }
+
+    public DependsOn(GameManagerInstance.UnlockStateID dependency) {
+        Dependency = dependency;
+    }
+    public bool IsAvailable() {
+        return GameManagerInstance.Instance.GetState(Dependency);
+    }
+}
+
+public class ValDependsOn<Value> : DependsOn where Value : struct {
+    private Nullable<Value> WrappedValue;
+
+    public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) { }
+    public Nullable<Value> GetValue() {
+        return IsAvailable() ? WrappedValue : null;
+    }
+}
+
+public class RefDependsOn<Value> : DependsOn where Value : class {
+    private Value WrappedValue;
+
+    public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) { }
+
+    public Value GeValue() {
+        return IsAvailable() ? WrappedValue : null;
+    }
+}
+
 public class GameManagerInstance : MonoBehaviour {
 
     // helper defines
     public enum UnlockStateID : UInt16 {
+        Possession = 0,
+        FloorPlane,
 
     }
 
@@ -20,6 +56,8 @@ public class GameManagerInstance : MonoBehaviour {
 
     private UInt64 Currency = 0;
     private List<bool> UnlockStates = new List<bool>();
+
+    private bool IgnoreUnlockCosts = false;
 
     // methods
     public bool GetState(UnlockStateID id) {
