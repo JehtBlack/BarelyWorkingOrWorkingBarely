@@ -48,7 +48,6 @@ public class GameManagerInstance : MonoBehaviour {
     public enum UnlockStateID : UInt16 {
         Possession = 0,
         FloorPlane,
-
     }
 
     // data
@@ -61,11 +60,15 @@ public class GameManagerInstance : MonoBehaviour {
 
     [SerializeField]
     private UInt64 Currency = 0;
+
     [SerializeField]
     private List<bool> UnlockStates = new List<bool>();
 
     [SerializeField]
     private bool IgnoreUnlockCosts = false;
+
+    public event Action<ulong> CurrencyChanged;
+
 
     // methods
     public bool GetUnlockState(UnlockStateID id) {
@@ -104,12 +107,14 @@ public class GameManagerInstance : MonoBehaviour {
         if (UInt64.MaxValue - amount <= Currency)
             amount = UInt64.MaxValue - Currency;
         Currency += amount;
+        CurrencyChanged(Currency);
     }
 
     public void RemoveCurrency(UInt64 amount) {
         if (amount > Currency)
             amount = Currency;
         Currency -= amount;
+        CurrencyChanged(Currency);
     }
 
     void Awake() {
