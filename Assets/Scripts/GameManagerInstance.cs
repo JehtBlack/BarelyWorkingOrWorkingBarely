@@ -92,7 +92,7 @@ public class GameManagerInstance : MonoBehaviour {
     // methods
     public bool GetUnlockState(UnlockStateID id) {
         ushort idx = (ushort)id;
-        if (idx > UnlockStates.Count) {
+        if (idx >= UnlockStates.Count) {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
         }
@@ -112,6 +112,11 @@ public class GameManagerInstance : MonoBehaviour {
         UnlockStates[idx] = state;
 
         UnlockStateChanged?.Invoke(id, oldState, state);
+    }
+
+    public Dictionary<UnlockStateID, Unlockable> GetUnlockCosts()
+    {
+        return UnlockCosts;
     }
 
     public Unlockable GetUnlockable(UnlockStateID id) {
