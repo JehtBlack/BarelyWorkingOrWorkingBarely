@@ -25,7 +25,7 @@ public class ShopPopulator : MonoBehaviour
             newObj = (GameObject)Instantiate(prefab, transform);
             ShopItemController SIC = newObj.GetComponent<ShopItemController>();
 
-            SIC.SetShopItem(item.Key, unlockable.Description, unlockable.Cost);
+            SIC.SetShopItem(item.Key, unlockable.Descriptions[0], unlockable.Cost);
         }
 
             // Randomize the color of our image

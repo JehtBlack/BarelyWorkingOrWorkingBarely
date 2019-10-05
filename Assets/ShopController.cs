@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopController : MonoBehaviour
-{
-
-
+[RequireComponent(typeof(Canvas))]
+public class ShopController : MonoBehaviour {
+    
+    public void Awake() {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
+    }
 
 
 
