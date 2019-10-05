@@ -21,26 +21,38 @@ public abstract class DependsOn {
 }
 
 public class ValDependsOn<Value> : DependsOn where Value : struct {
+    private Value? _WrappedValue;
     public Value? WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
         WrappedValue = null;
     }
+
+    public ValDependsOn(GameManagerInstance.UnlockStateID dependency, Value value) : base(dependency) {
+        WrappedValue = value;
+    }
 }
 
 public class RefDependsOn<Value> : DependsOn where Value : class {
+    private Value _WrappedValue;
+
     public Value WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
         WrappedValue = null;
     }
+
+    public RefDependsOn(GameManagerInstance.UnlockStateID dependency, Value value) : base(dependency) {
+        WrappedValue = value;
+    }
 }
+
 
 public class Unlockable
 {
@@ -100,7 +112,7 @@ public class GameManagerInstance : MonoBehaviour {
     // methods
     public bool GetUnlockState(UnlockStateID id) {
         ushort idx = (ushort)id;
-        if (idx > UnlockStates.Count) {
+        if (idx >= UnlockStates.Count) {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
         }
@@ -120,6 +132,11 @@ public class GameManagerInstance : MonoBehaviour {
         UnlockStates[idx] = state;
 
         UnlockStateChanged?.Invoke(id, oldState, state);
+    }
+
+    public Dictionary<UnlockStateID, Unlockable> GetUnlockCosts()
+    {
+        return UnlockCosts;
     }
 
     public Unlockable GetUnlockable(UnlockStateID id) {

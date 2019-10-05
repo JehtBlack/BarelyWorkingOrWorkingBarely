@@ -6,8 +6,6 @@ public class ShopPopulator : MonoBehaviour
 {
     public GameObject prefab; // This is our prefab object that will be exposed in the inspector
 
-    public int numberToCreate; // number of objects to create. Exposed in inspector
-
     void Start()
     {
         Populate();
@@ -17,14 +15,20 @@ public class ShopPopulator : MonoBehaviour
     {
         GameObject newObj; // Create GameObject instance
 
-        for (int i = 0; i < numberToCreate; i++)
+        Dictionary<GameManagerInstance.UnlockStateID, Unlockable> UnlockCosts = GameManagerInstance.Instance.GetUnlockCosts();
+
+        foreach (var item in UnlockCosts)
         {
+            Unlockable unlockable = item.Value;
+
             // Create new instances of our prefab until we've created as many as we specified
             newObj = (GameObject)Instantiate(prefab, transform);
+            ShopItemController SIC = newObj.GetComponent<ShopItemController>();
+
+            SIC.SetShopItem(item.Key, unlockable.Description, unlockable.Cost);
+        }
 
             // Randomize the color of our image
             //newObj.GetComponent().color = Random.ColorHSV();
-        }
-
     }
 }
