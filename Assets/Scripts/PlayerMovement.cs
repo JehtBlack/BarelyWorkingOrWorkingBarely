@@ -36,11 +36,8 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        float moveValue = 0;
-        if (HorizontalMovement.WrappedValue != null)
-            moveValue = HorizontalMovement.WrappedValue();
-        
-        HorizontalMove = moveValue;
+        float? moveValue = HorizontalMovement.WrappedValue?.Invoke();
+        HorizontalMove = moveValue.HasValue ? moveValue.Value : 0;
         if (Input.GetButtonDown("Jump"))
         {
             Jump = true;
