@@ -126,6 +126,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1942540789700264035}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &339248310 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3698524855289066013, guid: ef063e9fa3b800a468b419efbacb61b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5543913179016439524}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &418790353 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1553070685965500241, guid: 84cb38c3552e6964d9494e7925f6932c,
@@ -166,8 +172,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &518285737
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +336,6 @@ MonoBehaviour:
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 3
->>>>>>> Stashed changes
 --- !u!1 &690694485 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 610671129904748366, guid: a9128693fb3efdb47b11e18e9ad58a46,
@@ -425,8 +428,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &834480121
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,7 +645,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157617778}
   m_CullTransparentMesh: 0
->>>>>>> Stashed changes
 --- !u!1 &1177799880 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3655863286157485695, guid: 101bae68d280e4a459308a4069599e1d,
@@ -674,6 +674,8 @@ GameObject:
   - component: {fileID: 1189056851}
   - component: {fileID: 1189056850}
   - component: {fileID: 1189056849}
+  - component: {fileID: 1189056854}
+  - component: {fileID: 1189056853}
   - component: {fileID: 1189056852}
   m_Layer: 0
   m_Name: Main Camera
@@ -760,8 +762,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1177799880}
-<<<<<<< Updated upstream
-=======
 --- !u!114 &1189056853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,7 +934,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564077412}
   m_CullTransparentMesh: 0
->>>>>>> Stashed changes
 --- !u!1001 &610671129251823131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1328,8 +1327,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-<<<<<<< Updated upstream
-=======
     - target: {fileID: 5543913178876716456, guid: ef063e9fa3b800a468b419efbacb61b0,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1340,6 +1337,5 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
->>>>>>> Stashed changes
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef063e9fa3b800a468b419efbacb61b0, type: 3}
