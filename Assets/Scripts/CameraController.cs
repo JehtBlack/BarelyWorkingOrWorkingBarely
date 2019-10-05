@@ -10,7 +10,17 @@ public class CameraController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = GreyScaleProfile;
+
+        if (!GameManagerInstance.Instance.GetUnlockState(GameManagerInstance.UnlockStateID.ColourVision))
+            GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = GreyScaleProfile;
+
+        GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
+    }
+
+    void OnUnlock(GameManagerInstance.UnlockStateID id, bool oldState, bool newState) {
+        if (id == GameManagerInstance.UnlockStateID.ColourVision && newState && !oldState) {
+            GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = null;
+        }
     }
 
     // Update is called once per frame
