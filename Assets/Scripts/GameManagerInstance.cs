@@ -21,9 +21,10 @@ public abstract class DependsOn {
 }
 
 public class ValDependsOn<Value> : DependsOn where Value : struct {
+    private Value? _WrappedValue;
     public Value? WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
@@ -32,9 +33,10 @@ public class ValDependsOn<Value> : DependsOn where Value : struct {
 }
 
 public class RefDependsOn<Value> : DependsOn where Value : class {
+    private Value _WrappedValue;
     public Value WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
