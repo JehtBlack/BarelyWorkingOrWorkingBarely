@@ -68,7 +68,7 @@ public class GameManagerInstance : MonoBehaviour {
     private bool IgnoreUnlockCosts = false;
 
     public event Action<ulong> CurrencyChanged;
-
+    public event Action<UnlockStateID, bool /*oldState*/, bool /*newState*/> UnlockStateChanged;
 
     // methods
     public bool GetUnlockState(UnlockStateID id) {
@@ -88,7 +88,10 @@ public class GameManagerInstance : MonoBehaviour {
                 UnlockStates.Add(false);
         }
 
+        bool oldState = UnlockStates[idx];
         UnlockStates[idx] = state;
+
+        UnlockStateChanged?.Invoke(id, oldState, state);
     }
 
     public UInt64 GetUnlockCost(UnlockStateID id) {
@@ -107,14 +110,14 @@ public class GameManagerInstance : MonoBehaviour {
         if (UInt64.MaxValue - amount <= Currency)
             amount = UInt64.MaxValue - Currency;
         Currency += amount;
-        CurrencyChanged(Currency);
+        CurrencyChanged?.Invoke(Currency);
     }
 
     public void RemoveCurrency(UInt64 amount) {
         if (amount > Currency)
             amount = Currency;
         Currency -= amount;
-        CurrencyChanged(Currency);
+        CurrencyChanged?.Invoke(Currency);
     }
 
     void Awake() {
