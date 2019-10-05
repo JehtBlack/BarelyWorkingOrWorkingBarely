@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
         else
             CanMove = true;
 
-
+        GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
 
     }
 
