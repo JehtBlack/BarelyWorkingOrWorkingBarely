@@ -45,11 +45,11 @@ public class RefDependsOn<Value> : DependsOn where Value : class {
 public class Unlockable
 {
     public readonly string Description;
-    public readonly UInt64 Cost;
+    public readonly ulong Cost;
 
     private Unlockable() { }
 
-    public Unlockable(string description, UInt64 cost)
+    public Unlockable(string description, ulong cost)
     {
         Description = description;
         Cost = cost;
@@ -59,7 +59,7 @@ public class Unlockable
 public class GameManagerInstance : MonoBehaviour {
 
     // helper defines
-    public enum UnlockStateID : UInt16 {
+    public enum UnlockStateID : ushort {
         Possession = 0,
         FloorPlane,
     }
@@ -72,8 +72,8 @@ public class GameManagerInstance : MonoBehaviour {
         { UnlockStateID.Possession, new Unlockable("Possess the little guy", 0) },
     };
 
-    [SerializeField]
-    private UInt64 Currency = 0;
+    [SerializeField] 
+    private ulong Currency = 0;
 
     [SerializeField]
     private List<bool> UnlockStates = new List<bool>();
@@ -86,16 +86,17 @@ public class GameManagerInstance : MonoBehaviour {
 
     // methods
     public bool GetUnlockState(UnlockStateID id) {
-        UInt16 idx = (UInt16)id;
+        ushort idx = (ushort)id;
         if (idx > UnlockStates.Count) {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
         }
+
         return UnlockStates[(int)idx];
     }
 
     public void SetUnlockState(UnlockStateID id, bool state) {
-        UInt16 idx = (UInt16)id;
+        ushort idx = (ushort)id;
         if (idx > UnlockStates.Count)
         {
             while (UnlockStates.Count <= idx)
@@ -121,14 +122,18 @@ public class GameManagerInstance : MonoBehaviour {
         return UnlockCosts[id];
     }
 
-    public void AddCurrency(UInt64 amount) {
-        if (UInt64.MaxValue - amount <= Currency)
-            amount = UInt64.MaxValue - Currency;
+    public UInt64 GetCurrency() {
+        return Currency;
+    }
+
+    public void AddCurrency(ulong amount) {
+        if (ulong.MaxValue - amount <= Currency)
+            amount = ulong.MaxValue - Currency;
         Currency += amount;
         CurrencyChanged?.Invoke(Currency);
     }
 
-    public void RemoveCurrency(UInt64 amount) {
+    public void RemoveCurrency(ulong amount) {
         if (amount > Currency)
             amount = Currency;
         Currency -= amount;
