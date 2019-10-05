@@ -59,9 +59,12 @@ public class GameManagerInstance : MonoBehaviour {
 
     };
 
+    [SerializeField]
     private UInt64 Currency = 0;
+    [SerializeField]
     private List<bool> UnlockStates = new List<bool>();
 
+    [SerializeField]
     private bool IgnoreUnlockCosts = false;
 
     // methods
