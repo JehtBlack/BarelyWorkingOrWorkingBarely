@@ -8,22 +8,41 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController2D controller2D;
     [Range(0, 100.0f)] public float MovementSpeed = 10.0f;
 
-
+    private bool CanMove = false;
     private bool Jump = false;
     private float HorizontalMove = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!GameManagerInstance.Instance.GetUnlockState(GameManagerInstance.UnlockStateID.Possession))
+            CanMove = false;
+        else
+            CanMove = true;
+
+
+
     }
+
+    void OnUnlock(GameManagerInstance.UnlockStateID id, bool oldState, bool newState)
+    {
+        if (id == GameManagerInstance.UnlockStateID.Possession && newState && !oldState)
+            CanMove = true;
+        else
+            CanMove = false;
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        HorizontalMove = Input.GetAxisRaw("Horizontal") * MovementSpeed;
-        if (Input.GetButtonDown("Jump"))
+
+        if (CanMove)
         {
-            Jump = true;
+            HorizontalMove = Input.GetAxisRaw("Horizontal") * MovementSpeed;
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump = true;
+            }
         }
     }
 

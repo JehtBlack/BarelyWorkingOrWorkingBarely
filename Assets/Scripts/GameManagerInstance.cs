@@ -63,6 +63,10 @@ public class GameManagerInstance : MonoBehaviour {
         Possession = 0,
         FloorPlane,
         ColourVision,
+        TestItem1,
+        TestItem2,
+        TestItem3,
+        TestItem4
     }
 
     // data
@@ -71,6 +75,8 @@ public class GameManagerInstance : MonoBehaviour {
     [NonSerialized]
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
         { UnlockStateID.Possession, new Unlockable("Possess the little guy", 0) },
+        { UnlockStateID.ColourVision, new Unlockable("You like colour right?", 100) },
+        { UnlockStateID.FloorPlane, new Unlockable("Floors are important aren't they?", 100) },
         { UnlockStateID.TestItem1, new Unlockable("Tests item 1", 100) },
         { UnlockStateID.TestItem2, new Unlockable("Tests item 2", 200) },
         { UnlockStateID.TestItem3, new Unlockable("Tests item 3", 300) },
