@@ -22,9 +22,13 @@ public class ShopItemController : MonoBehaviour
 
     public void BuyRequest()
     {
-        GameManagerInstance.Instance.SetUnlockState(_UnlockItem, true);
+        if (GameManagerInstance.Instance.GetCurrency() >= _Cost)
+        {
+            GameManagerInstance.Instance.RemoveCurrency(_Cost);
+            GameManagerInstance.Instance.SetUnlockState(_UnlockItem, true);
+            Destroy(gameObject);
+        }
     }
-
 
     public void SetShopItem(GameManagerInstance.UnlockStateID pId, string pDescription = "", ulong pValue = 0)
     {
