@@ -21,26 +21,38 @@ public abstract class DependsOn {
 }
 
 public class ValDependsOn<Value> : DependsOn where Value : struct {
+    private Value? _WrappedValue;
     public Value? WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public ValDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
         WrappedValue = null;
     }
+
+    public ValDependsOn(GameManagerInstance.UnlockStateID dependency, Value value) : base(dependency) {
+        WrappedValue = value;
+    }
 }
 
 public class RefDependsOn<Value> : DependsOn where Value : class {
+    private Value _WrappedValue;
+
     public Value WrappedValue {
-        get { return IsAvailable() ? WrappedValue : null; }
-        set { WrappedValue = value; }
+        get { return IsAvailable() ? _WrappedValue : null; }
+        set { _WrappedValue = value; }
     }
 
     public RefDependsOn(GameManagerInstance.UnlockStateID dependency) : base(dependency) {
         WrappedValue = null;
     }
+
+    public RefDependsOn(GameManagerInstance.UnlockStateID dependency, Value value) : base(dependency) {
+        WrappedValue = value;
+    }
 }
+
 
 public class Unlockable
 {
@@ -63,6 +75,10 @@ public class GameManagerInstance : MonoBehaviour {
         Possession = 0,
         FloorPlane,
         ColourVision,
+        TestItem1,
+        TestItem2,
+        TestItem3,
+        TestItem4
     }
 
     // data
@@ -71,6 +87,12 @@ public class GameManagerInstance : MonoBehaviour {
     [NonSerialized]
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
         { UnlockStateID.Possession, new Unlockable("Possess the little guy", 0) },
+        { UnlockStateID.ColourVision, new Unlockable("You like colour right?", 100) },
+        { UnlockStateID.FloorPlane, new Unlockable("Floors are important aren't they?", 100) },
+        { UnlockStateID.TestItem1, new Unlockable("Tests item 1", 100) },
+        { UnlockStateID.TestItem2, new Unlockable("Tests item 2", 200) },
+        { UnlockStateID.TestItem3, new Unlockable("Tests item 3", 300) },
+        { UnlockStateID.TestItem4, new Unlockable("Tests item 4", 400) },
     };
 
     [SerializeField] 
@@ -90,7 +112,7 @@ public class GameManagerInstance : MonoBehaviour {
     // methods
     public bool GetUnlockState(UnlockStateID id) {
         ushort idx = (ushort)id;
-        if (idx > UnlockStates.Count) {
+        if (idx >= UnlockStates.Count) {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
         }
@@ -110,6 +132,11 @@ public class GameManagerInstance : MonoBehaviour {
         UnlockStates[idx] = state;
 
         UnlockStateChanged?.Invoke(id, oldState, state);
+    }
+
+    public Dictionary<UnlockStateID, Unlockable> GetUnlockCosts()
+    {
+        return UnlockCosts;
     }
 
     public Unlockable GetUnlockable(UnlockStateID id) {

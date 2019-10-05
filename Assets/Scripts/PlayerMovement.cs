@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController2D))]
 public class PlayerMovement : MonoBehaviour
 {
 
     delegate float GetHorizontalMoventDelegate();
 
-    RefDependsOn<GetHorizontalMoventDelegate> HorizontalMovement = new RefDependsOn<GetHorizontalMoventDelegate>(GameManagerInstance.UnlockStateID.Possession);
+    [NonSerialized]
+    private RefDependsOn<GetHorizontalMoventDelegate> HorizontalMovement = new RefDependsOn<GetHorizontalMoventDelegate>(GameManagerInstance.UnlockStateID.Possession);
 
-    public CharacterController2D controller2D;
+    private CharacterController2D Controller2D;
     [Range(0, 100.0f)] public float MovementSpeed = 10.0f;
 
 
@@ -17,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private float HorizontalMove = 0.0f;
 
     void Awake() {
+        Controller2D = GetComponent<CharacterController2D>();
         HorizontalMovement.WrappedValue = GetHorizontalMovement;
     }
 
@@ -32,11 +36,8 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        float moveValue = 0;
-        if (HorizontalMovement.WrappedValue != null)
-            moveValue = HorizontalMovement.WrappedValue();
-        
-        HorizontalMove = moveValue;
+        float? moveValue = HorizontalMovement.WrappedValue?.Invoke();
+        HorizontalMove = moveValue.HasValue ? moveValue.Value : 0;
         if (Input.GetButtonDown("Jump"))
         {
             Jump = true;
@@ -45,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        controller2D.Move((HorizontalMove * Time.fixedDeltaTime), false, Jump);
+        Controller2D.Move((HorizontalMove * Time.fixedDeltaTime), false, Jump);
         Jump = false;
     }
 }
