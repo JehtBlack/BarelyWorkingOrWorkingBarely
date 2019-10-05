@@ -108,16 +108,17 @@ public class GameManagerInstance : MonoBehaviour {
         UnlockStateChanged?.Invoke(id, oldState, state);
     }
 
-    public UInt64 GetUnlockCost(UnlockStateID id) {
+    public Unlockable GetUnlockable(UnlockStateID id) {
         if (!UnlockCosts.ContainsKey(id)) {
             Debug.LogError(string.Format("Unlock State ID {0} cost not defined!", id.ToString("g")));
-            return 0;
+            return new Unlockable("We forgot to add this one", 0);
         }
 
-        if (IgnoreUnlockCosts)
-            return 0;
+        if (IgnoreUnlockCosts) {
+            return new Unlockable(UnlockCosts[id].Description, 0);
+        }
 
-        return UnlockCosts[id].Cost;
+        return UnlockCosts[id];
     }
 
     public void AddCurrency(UInt64 amount) {
