@@ -16,7 +16,7 @@ public class CurrencyAcquisition : MonoBehaviour {
 
     private int CollectionCount = 0;
     
-    void TriggerCollection() {
+    public void TriggerCollection() {
 
         float t = CollectionCount / (float) MaxCollectionCount;
         float evaluation = Mathf.Lerp(0, MaxCollectionCount, t);

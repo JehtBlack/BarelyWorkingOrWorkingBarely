@@ -42,6 +42,20 @@ public class RefDependsOn<Value> : DependsOn where Value : class {
     }
 }
 
+public class Unlockable
+{
+    public readonly string Description;
+    public readonly UInt64 Cost;
+
+    private Unlockable() { }
+
+    public Unlockable(string description, UInt64 cost)
+    {
+        Description = description;
+        Cost = cost;
+    }
+}
+
 public class GameManagerInstance : MonoBehaviour {
 
     // helper defines
@@ -54,8 +68,8 @@ public class GameManagerInstance : MonoBehaviour {
     public static GameManagerInstance Instance;
 
     [NonSerialized]
-    private Dictionary<UnlockStateID, UInt64> UnlockCosts = new Dictionary<UnlockStateID, UInt64> {
-
+    private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
+        { UnlockStateID.Possession, new Unlockable("Possess the little guy", 0) },
     };
 
     [SerializeField]
@@ -68,7 +82,7 @@ public class GameManagerInstance : MonoBehaviour {
     private bool IgnoreUnlockCosts = false;
 
     public event Action<ulong> CurrencyChanged;
-
+    public event Action<UnlockStateID, bool /*oldState*/, bool /*newState*/> UnlockStateChanged;
 
     // methods
     public bool GetUnlockState(UnlockStateID id) {
@@ -88,7 +102,10 @@ public class GameManagerInstance : MonoBehaviour {
                 UnlockStates.Add(false);
         }
 
+        bool oldState = UnlockStates[idx];
         UnlockStates[idx] = state;
+
+        UnlockStateChanged?.Invoke(id, oldState, state);
     }
 
     public UInt64 GetUnlockCost(UnlockStateID id) {
@@ -100,21 +117,21 @@ public class GameManagerInstance : MonoBehaviour {
         if (IgnoreUnlockCosts)
             return 0;
 
-        return UnlockCosts[id];
+        return UnlockCosts[id].Cost;
     }
 
     public void AddCurrency(UInt64 amount) {
         if (UInt64.MaxValue - amount <= Currency)
             amount = UInt64.MaxValue - Currency;
         Currency += amount;
-        CurrencyChanged(Currency);
+        CurrencyChanged?.Invoke(Currency);
     }
 
     public void RemoveCurrency(UInt64 amount) {
         if (amount > Currency)
             amount = Currency;
         Currency -= amount;
-        CurrencyChanged(Currency);
+        CurrencyChanged?.Invoke(Currency);
     }
 
     void Awake() {
