@@ -62,6 +62,7 @@ public class GameManagerInstance : MonoBehaviour {
     public enum UnlockStateID : ushort {
         Possession = 0,
         FloorPlane,
+        ColourVision,
     }
 
     // data
