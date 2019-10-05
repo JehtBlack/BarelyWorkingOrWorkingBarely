@@ -56,14 +56,14 @@ public class RefDependsOn<Value> : DependsOn where Value : class {
 
 public class Unlockable
 {
-    public readonly string Description;
+    public readonly string[] Descriptions;
     public readonly ulong Cost;
 
     private Unlockable() { }
 
-    public Unlockable(string description, ulong cost)
+    public Unlockable(string[] descriptions, ulong cost)
     {
-        Description = description;
+        Descriptions = descriptions;
         Cost = cost;
     }
 }
@@ -84,15 +84,15 @@ public class GameManagerInstance : MonoBehaviour {
     // data
     public static GameManagerInstance Instance;
 
-    [NonSerialized]
+    [NonSerialized][
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
-        { UnlockStateID.Possession, new Unlockable("Possess the little guy", 0) },
-        { UnlockStateID.ColourVision, new Unlockable("You like colour right?", 100) },
-        { UnlockStateID.FloorPlane, new Unlockable("Floors are important aren't they?", 100) },
-        { UnlockStateID.TestItem1, new Unlockable("Tests item 1", 100) },
-        { UnlockStateID.TestItem2, new Unlockable("Tests item 2", 200) },
-        { UnlockStateID.TestItem3, new Unlockable("Tests item 3", 300) },
-        { UnlockStateID.TestItem4, new Unlockable("Tests item 4", 400) },
+        { UnlockStateID.Possession, new Unlockable(new [] { "Possess the little guy" }, 0) },
+        { UnlockStateID.ColourVision, new Unlockable(new [] { "You like colour right?" }, 100) },
+        { UnlockStateID.FloorPlane, new Unlockable(new [] { "Floors are important aren't they?" }, 100) },
+        { UnlockStateID.TestItem1, new Unlockable(new [] { "Tests item 1" }, 100) },
+        { UnlockStateID.TestItem2, new Unlockable(new [] { "Tests item 2" }, 200) },
+        { UnlockStateID.TestItem3, new Unlockable(new [] { "Tests item 3" }, 300) },
+        { UnlockStateID.TestItem4, new Unlockable(new [] { "Tests item 4" }, 400) },
     };
 
     [SerializeField] 
@@ -142,11 +142,11 @@ public class GameManagerInstance : MonoBehaviour {
     public Unlockable GetUnlockable(UnlockStateID id) {
         if (!UnlockCosts.ContainsKey(id)) {
             Debug.LogError(string.Format("Unlock State ID {0} cost not defined!", id.ToString("g")));
-            return new Unlockable("We forgot to add this one", 0);
+            return new Unlockable(new[] { "We forgot to add this one" }, 0);
         }
 
         if (IgnoreUnlockCosts) {
-            return new Unlockable(UnlockCosts[id].Description, 0);
+            return new Unlockable(UnlockCosts[id].Descriptions, 0);
         }
 
         return UnlockCosts[id];
