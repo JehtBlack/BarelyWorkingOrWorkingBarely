@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,7 +16,7 @@ public abstract class DependsOn {
         Dependency = dependency;
     }
     public bool IsAvailable() {
-        return GameManagerInstance.Instance.GetState(Dependency);
+        return GameManagerInstance.Instance.GetUnlockState(Dependency);
     }
 }
 
@@ -64,13 +65,48 @@ public class GameManagerInstance : MonoBehaviour {
     private bool IgnoreUnlockCosts = false;
 
     // methods
-    public bool GetState(UnlockStateID id) {
+    public bool GetUnlockState(UnlockStateID id) {
         UInt16 idx = (UInt16)id;
         if (idx > UnlockStates.Count) {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
         }
         return UnlockStates[(int)idx];
+    }
+
+    public void SetUnlockState(UnlockStateID id, bool state) {
+        UInt16 idx = (UInt16)id;
+        if (idx > UnlockStates.Count)
+        {
+            while (UnlockStates.Count <= idx)
+                UnlockStates.Add(false);
+        }
+
+        UnlockStates[idx] = state;
+    }
+
+    public UInt64 GetUnlockCost(UnlockStateID id) {
+        if (!UnlockCosts.ContainsKey(id)) {
+            Debug.LogError(string.Format("Unlock State ID {0} cost not defined!", id.ToString("g")));
+            return 0;
+        }
+
+        if (IgnoreUnlockCosts)
+            return 0;
+
+        return UnlockCosts[id];
+    }
+
+    public void AddCurrency(UInt64 amount) {
+        if (UInt64.MaxValue - amount <= Currency)
+            amount = UInt64.MaxValue - Currency;
+        Currency += amount;
+    }
+
+    public void RemoveCurrency(UInt64 amount) {
+        if (amount > Currency)
+            amount = Currency;
+        Currency -= amount;
     }
 
     void Awake() {
