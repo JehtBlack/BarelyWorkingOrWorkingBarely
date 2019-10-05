@@ -79,11 +79,13 @@ public class GameManagerInstance : MonoBehaviour {
     [SerializeField]
     private List<bool> UnlockStates = new List<bool>();
 
-    [SerializeField]
-    private bool IgnoreUnlockCosts = false;
-
     public event Action<ulong> CurrencyChanged;
     public event Action<UnlockStateID, bool /*oldState*/, bool /*newState*/> UnlockStateChanged;
+
+    // Editor stuff
+    [Header("Debug Settings")]
+    public bool IgnoreUnlockCosts = false;
+    public UnlockStateID UnlockID;
 
     // methods
     public bool GetUnlockState(UnlockStateID id) {
