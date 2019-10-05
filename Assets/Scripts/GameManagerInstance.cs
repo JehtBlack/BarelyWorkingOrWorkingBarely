@@ -84,7 +84,7 @@ public class GameManagerInstance : MonoBehaviour {
     // data
     public static GameManagerInstance Instance;
 
-    [NonSerialized][
+    [NonSerialized]
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
         { UnlockStateID.Possession, new Unlockable(new [] { "Possess the little guy" }, 0) },
         { UnlockStateID.ColourVision, new Unlockable(new [] { "You like colour right?" }, 100) },
