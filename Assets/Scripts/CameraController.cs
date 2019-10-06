@@ -18,8 +18,11 @@ public class CameraController : MonoBehaviour {
     }
 
     void OnUnlock(GameManagerInstance.UnlockStateID id, bool oldState, bool newState) {
-        if (id == GameManagerInstance.UnlockStateID.ColourVision && newState && !oldState) {
-            GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = null;
+        if (id == GameManagerInstance.UnlockStateID.ColourVision && newState != oldState) {
+            if (newState)
+                GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = null;
+            else
+                GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = GreyScaleProfile;
         }
     }
 
