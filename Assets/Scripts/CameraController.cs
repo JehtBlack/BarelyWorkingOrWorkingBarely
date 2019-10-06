@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour {
         if (!GameManagerInstance.Instance.GetUnlockState(GameManagerInstance.UnlockStateID.ColourVision))
             GetComponent<UnityEngine.PostProcessing.PostProcessingBehaviour>().profile = GreyScaleProfile;
 
-        GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
+        SettingController.Instance.OnSettingChanged += OnUnlock;
     }
 
     void OnUnlock(GameManagerInstance.UnlockStateID id, bool oldState, bool newState) {
