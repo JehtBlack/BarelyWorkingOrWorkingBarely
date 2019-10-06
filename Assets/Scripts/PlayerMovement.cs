@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController2D))]
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
+    [SerializeField]
+    private GameObject TreadObj;
 
     delegate float GetHorizontalMoventDelegate();
 
@@ -25,9 +26,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
+    }
+
+    void OnUnlock(GameManagerInstance.UnlockStateID id, bool oldState, bool newState) {
+        if (id == GameManagerInstance.UnlockStateID.Possession && !oldState && newState) {
+            GameObject child = Instantiate(TreadObj) as GameObject;
+            child.transform.parent = transform;
+            child.transform.localPosition = TreadObj.transform.localPosition;
+        }
     }
 
     float GetHorizontalMovement() {

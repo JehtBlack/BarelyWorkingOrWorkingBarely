@@ -544,6 +544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67f7e2ec0993e44eab398225ceb108d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TreadObj: {fileID: 3900533942341377338, guid: e7d15935a2b622e4cbe1b78b78245ab1,
+    type: 3}
   MovementSpeed: 20
 --- !u!114 &1177799887
 MonoBehaviour:
