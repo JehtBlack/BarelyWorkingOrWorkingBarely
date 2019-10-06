@@ -15,17 +15,15 @@ public class SettingPopulator : MonoBehaviour
     {
         GameObject newObj; // Create GameObject instance
 
-        Dictionary<GameManagerInstance.UnlockStateID, Unlockable> UnlockCosts = GameManagerInstance.Instance.GetUnlockCosts();
-
-        foreach (var item in UnlockCosts)
+        foreach (var item in SettingController.Instance.SettingsFilter)
         {
-            Unlockable unlockable = item.Value;
+            Unlockable unlockable = GameManagerInstance.Instance.GetUnlockable(item);
 
             // Create new instances of our prefab until we've created as many as we specified
             newObj = (GameObject)Instantiate(prefab, transform);
             SettingItemController SIC = newObj.GetComponent<SettingItemController>();
 
-            SIC.SetSettingItem(item.Key, unlockable.Descriptions[0], unlockable.Cost);
+            SIC.SetSettingItem(item, unlockable.Descriptions[0], unlockable.Cost);
         }
     }
 }

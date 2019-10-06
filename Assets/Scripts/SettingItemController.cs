@@ -37,7 +37,8 @@ public class SettingItemController : MonoBehaviour
     public void ToggleEnabled()
     {
         IsEnabled = !IsEnabled;
-        GameManagerInstance.Instance.SetUnlockState(_UnlockItem, IsEnabled);
+        bool? value = SettingController.Instance.GetSettable(_UnlockItem);
+        SettingController.Instance.SetSettable(_UnlockItem, value.HasValue ? !value.Value : false);
     }
 
     public void SetSettingItem(GameManagerInstance.UnlockStateID pId, string pDescription = "", ulong pValue = 0)
