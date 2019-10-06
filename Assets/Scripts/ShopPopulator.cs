@@ -27,8 +27,5 @@ public class ShopPopulator : MonoBehaviour
 
             SIC.SetShopItem(item.Key, unlockable.Descriptions[0], unlockable.Cost);
         }
-
-            // Randomize the color of our image
-            //newObj.GetComponent().color = Random.ColorHSV();
     }
 }
