@@ -81,8 +81,17 @@ public class GameManagerInstance : MonoBehaviour {
         TestItem4
     }
 
+    public enum SoundEffect {
+        Test,
+    }
+
     // data
     public static GameManagerInstance Instance;
+
+    [NonSerialized] 
+    public readonly Dictionary<SoundEffect, string> SoundEffectSettings = new Dictionary<SoundEffect, string> {
+        { SoundEffect.Test, "1,.5,,.1711,,.0495,.3,.7466,.3297,-.1746,,,,,,,,,,,.2402,.1022,,,,1,,,.1853,,," }
+    };
 
     [NonSerialized]
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
@@ -178,6 +187,17 @@ public class GameManagerInstance : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+    }
+
+    public SfxrSynth GetSoundEffect(SoundEffect sfx) {
+        if (!SoundEffectSettings.ContainsKey(sfx)) {
+            Debug.LogError("Requested an unimplemented sound effect!");
+            return new SfxrSynth();
+        }
+
+        SfxrSynth synth = new SfxrSynth();
+        synth.parameters.SetSettingsString(SoundEffectSettings[sfx]);
+        return synth;
     }
 
     // Start is called before the first frame update
