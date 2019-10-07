@@ -30,17 +30,25 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
     private GameObject BulletObj;
 
     Vector2 GetTargetPosition() {
+
+        int GetIdx() {
+            bool forwards = (TargetPosition / PatrolPoints.Count) % 2 == 0;
+
+            int ret = TargetPosition % PatrolPoints.Count;
+            if (!forwards) {
+                ret = (PatrolPoints.Count - 1) - ret;
+            }
+
+            return ret;
+        }
+
         int idx = -1;
         if (PatrolPoints.Count > 0) {
+            idx = GetIdx();
             float sqTargetTolerance = TargetReachedTolerance * TargetReachedTolerance;
-            if ((PatrolPoints[TargetPosition] - (Vector2) transform.position).sqrMagnitude <= sqTargetTolerance) {
+            if ((PatrolPoints[idx] - (Vector2) transform.position).sqrMagnitude <= sqTargetTolerance) {
                 TargetPosition++;
-                bool forwards = (TargetPosition / PatrolPoints.Count) % 2 == 0;
-
-                idx = TargetPosition % PatrolPoints.Count;
-                if (!forwards) {
-                    idx = (PatrolPoints.Count - 1) - idx;
-                }
+                idx = GetIdx();
             }
         }
         return idx == -1 ? Root : PatrolPoints[idx];
@@ -106,5 +114,12 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
 
         UnityEditor.Handles.color = Color.yellow;
         UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, AggroRadius());
+
+        Gizmos.color = Color.black;
+        float size = 0.1f;
+        foreach (Vector2 v in PatrolPoints) {
+            Gizmos.DrawLine(new Vector3(v.x - size, v.y - size), new Vector3(v.x + size, v.y + size));
+            Gizmos.DrawLine(new Vector3(v.x - size, v.y + size), new Vector3(v.x + size, v.y - size));
+        }
     }
 }
