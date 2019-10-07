@@ -11,9 +11,11 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
     private GameObject CannonObj;
 
     delegate float GetHorizontalMoventDelegate();
+    delegate void FireWeaponDelegate();
 
     [NonSerialized]
     private RefDependsOn<GetHorizontalMoventDelegate> HorizontalMovement = new RefDependsOn<GetHorizontalMoventDelegate>(GameManagerInstance.UnlockStateID.Possession);
+    private RefDependsOn<FireWeaponDelegate> FireWeapon = new RefDependsOn<FireWeaponDelegate>(GameManagerInstance.UnlockStateID.Cannon);
 
     private CharacterController2D Controller2D;
     [Range(0, 100.0f)] public float MovementSpeed = 10.0f;
@@ -26,9 +28,10 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
     private const float MaxHealth = 100.0f;
     [SerializeField]
     private float Health = MaxHealth;
-    
 
     void Awake() {
+        if (GameManagerInstance.Instance != null)
+            GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
         Controller2D = GetComponent<CharacterController2D>();
         HorizontalMovement.WrappedValue = GetHorizontalMovement;
     }
@@ -49,13 +52,16 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
             GameObject child = Instantiate(CannonObj) as GameObject;
             child.transform.parent = transform;
             child.transform.localPosition = CannonObj.transform.localPosition;
-            child.GetComponentInChildren<CannonFire>().FacingRightCallback = GetComponent<CharacterController2D>().FacingRight;
+            CannonFire fireable = child.GetComponentInChildren<CannonFire>();
+            fireable.FacingRightCallback = GetComponent<CharacterController2D>().FacingRight;
+            FireWeapon.WrappedValue = fireable.UseWeapon;
         }
     }
 
     float GetHorizontalMovement() {
         return Input.GetAxisRaw("Horizontal") * MovementSpeed;
     }
+
 
     // Update is called once per frame
     void Update() {
@@ -65,6 +71,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
         {
             Jump = true;
         }
+
+        if (Input.GetButtonDown("Fire1"))
+            FireWeapon.WrappedValue?.Invoke();
     }
 
     private void FixedUpdate()

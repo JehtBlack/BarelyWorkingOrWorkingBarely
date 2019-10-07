@@ -35,12 +35,16 @@ public class SettingController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        subscribed = false;
     }
 
     void Start() {
-        GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
+        
     }
 
+    private bool subscribed = false;
+    
     public void SetSettable(GameManagerInstance.UnlockStateID id, bool state) {
         // if id must alter other settables check here and turn off other settings
 
@@ -64,8 +68,14 @@ public class SettingController : MonoBehaviour
         }
     }
 
-    public void Update()
+    void Update()
     {
+        if (!subscribed)
+        {
+            GameManagerInstance.Instance.UnlockStateChanged += OnUnlock;
+            subscribed = true;
+        }
+
         if (Input.GetButtonDown("Settings"))
             ToggleSettings();
     }

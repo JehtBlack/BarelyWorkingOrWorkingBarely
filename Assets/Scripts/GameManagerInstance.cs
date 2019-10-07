@@ -142,7 +142,7 @@ public class GameManagerInstance : MonoBehaviour {
 
     public void SetUnlockState(UnlockStateID id, bool state) {
         ushort idx = (ushort)id;
-        if (idx > UnlockStates.Count)
+        if (idx >= UnlockStates.Count)
         {
             while (UnlockStates.Count <= idx)
                 UnlockStates.Add(false);
@@ -216,40 +216,65 @@ public class GameManagerInstance : MonoBehaviour {
         float? hp = GameObject.FindWithTag("Player").GetComponent<IDamageable>()?.CurrentHealth();
         caching.PlayerHealth = hp.HasValue ? hp.Value : 100.0f;
         caching.PlayerCurrency = Currency;
-        caching.UnlockStates = UnlockStates;
-        caching.Settings = SettingController.Instance.Settables;
+        caching.UnlockStates = new List<bool>();
+        foreach (bool b in UnlockStates) {
+            caching.UnlockStates.Add(b);
+        }
+        caching.Settings = new Dictionary<UnlockStateID, bool>();
+        foreach (var item in SettingController.Instance.Settables) {
+            caching.Settings[item.Key] = item.Value;
+        }
         caching.CheckPointPosition = checkpointPosition;
 
         LastWorldState = caching;
     }
 
+    private bool Resetting = false;
+    private bool SkipResetFrame = true;
     public void ResetToLastCheckpoint() {
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
 
-        Currency = LastWorldState.PlayerCurrency;
+        UnlockStateChanged = null;
+        CurrencyChanged = null;
 
-        GameObject player = GameObject.FindWithTag("Player");
-        player.GetComponent<IDamageable>()?.HealAmount(LastWorldState.PlayerHealth, true);
-        player.transform.position = LastWorldState.CheckPointPosition;
-
-        for (int i = 0; i < LastWorldState.UnlockStates.Count; ++i) {
-            UnlockStateID id = (UnlockStateID)i;
-            SetUnlockState(id, LastWorldState.UnlockStates[i]);
-        }
-
-        foreach (var setting in LastWorldState.Settings) {
-            SettingController.Instance.SetSettable(setting.Key, setting.Value);
-        }
+        Resetting = true;
     }
 
     // Start is called before the first frame update
     void Start() {
-        
     }
 
     // Update is called once per frame
     void Update() {
-        
+        if (!Resetting)
+            return;
+
+        if (SkipResetFrame) {
+            SkipResetFrame = false;
+            return;
+        }
+
+        WorldState state = LastWorldState;
+
+        Currency = state.PlayerCurrency;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        player.GetComponent<IDamageable>()?.HealAmount(state.PlayerHealth, true);
+        player.transform.position = state.CheckPointPosition;
+        UnlockStates.Clear();
+        for (int i = 0; i < state.UnlockStates.Count; ++i)
+        {
+            UnlockStateID id = (UnlockStateID)i;
+            SetUnlockState(id, state.UnlockStates[i]);
+        }
+
+        foreach (var setting in state.Settings)
+        {
+            SettingController.Instance.SetSettable(setting.Key, setting.Value);
+        }
+
+        Resetting = false;
+        SkipResetFrame = true;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
+[RequireComponent(typeof(CharacterController2D))]
 public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
     private Vector2 Root;
 
@@ -24,13 +26,24 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
     private List<Vector2> PatrolPoints = new List<Vector2>();
 
     private int TargetPosition;
-    private const float TargetReachedTolerance = 0.1f;
+    private const float TargetReachedTolerance = 0.5f;
     private bool Repositioning;
     private const int RepositionFrames = 10;
     private int RepositonTimer = RepositionFrames;
 
     [SerializeField]
     private GameObject BulletObj;
+
+    public CannonFire Fireable;
+
+    private const int WeaponCoolDown = 30;
+    private int Cooldown = 0;
+
+    void Start() {
+        Fireable = GetComponentInChildren<CannonFire>();
+        Fireable.FacingRightCallback = GetComponent<CharacterController2D>().FacingRight;
+        Fireable.Power = Power;
+    }
 
     Vector2 GetTargetPosition() {
 
@@ -111,10 +124,18 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
         return _MovementSpeed;
     }
 
+    public void Update() {
+        if (Cooldown > 0)
+            Cooldown--;
+    }
+
     public void Attack(IDamageable player, float distanceToPlayer) {
 
         if (Ranged) {
-            GameObject bullet = GameObject.Instantiate(BulletObj, transform.position, Quaternion.identity);
+            if (Cooldown <= 0) {
+                Fireable.UseWeapon();
+                Cooldown = WeaponCoolDown;
+            }
         }
         else {
 

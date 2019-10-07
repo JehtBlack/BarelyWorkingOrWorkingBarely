@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController2D))]
 public class EnemyAI : MonoBehaviour, IDamageable {
     private IEnemyBehaviour Behaviour;
 
@@ -13,6 +14,10 @@ public class EnemyAI : MonoBehaviour, IDamageable {
     private const float MaxHealth = 10.0f;
     [SerializeField]
     private float Health = MaxHealth;
+
+    private CharacterController2D Controller2D;
+    private bool Jump = false;
+    private float HorizontalMove = 0.0f;
 
     bool BehaviourAttached() {
         return Behaviour != null;
@@ -36,6 +41,7 @@ public class EnemyAI : MonoBehaviour, IDamageable {
         Player = GameObject.FindWithTag("Player");
 
         GetBehaviour();
+        Controller2D = GetComponent<CharacterController2D>();
     }
 
     Vector2 ToPlayer() {
@@ -56,7 +62,9 @@ public class EnemyAI : MonoBehaviour, IDamageable {
         aggroed = hit.transform == Player.transform && hit.distance <= Behaviour.AggroRadius();
 
         Vector2 moveTo = Behaviour.NextDestination(transform.position, aggroed, Player.transform.position);
-        transform.position = Vector2.MoveTowards(transform.position, moveTo, Behaviour.MovementSpeed() * Time.deltaTime);
+        moveTo -= (Vector2)transform.position;
+        moveTo.Normalize();
+        HorizontalMove = moveTo.x * Behaviour.MovementSpeed();
 
         if (aggroed) {
             hit = Physics2D.Raycast(transform.position, rayDir, Mathf.Infinity, checkLayers);
@@ -72,6 +80,9 @@ public class EnemyAI : MonoBehaviour, IDamageable {
         }
     }
 
+    void FixedUpdate() {
+        Controller2D.Move((HorizontalMove * Time.fixedDeltaTime), false, Jump);
+    }
     public float CurrentHealth() {
         return Health;
     }
