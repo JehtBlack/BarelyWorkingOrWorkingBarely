@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class EnemyAI : MonoBehaviour, IDamageable {
     private IEnemyBehaviour Behaviour;
 

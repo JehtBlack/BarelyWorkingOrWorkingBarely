@@ -25,6 +25,9 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
 
     private int TargetPosition;
     private const float TargetReachedTolerance = 0.1f;
+    private bool Repositioning;
+    private const int RepositionFrames = 10;
+    private int RepositonTimer = RepositionFrames;
 
     [SerializeField]
     private GameObject BulletObj;
@@ -70,16 +73,27 @@ public class PatrollingEnemy : MonoBehaviour, IEnemyBehaviour {
             return GetTargetPosition();
         }
 
-        bool shouldConsiderReposition = Random.value < 0.25f;
 
-        if (shouldConsiderReposition) {
-            float repositionThreshold = _OptimalRange * 0.85f;
-            repositionThreshold *= repositionThreshold;
-            if (Ranged && ((currentPlayerPosition - currentPosition).sqrMagnitude < repositionThreshold)) {
+        float repositionThreshold = _OptimalRange * 0.85f;
+        repositionThreshold *= repositionThreshold;
+        if (Ranged && ((currentPlayerPosition - currentPosition).sqrMagnitude < repositionThreshold)) {
+            bool shouldConsiderReposition = Random.value < 0.05f;
+            if (shouldConsiderReposition && !Repositioning)
+                Repositioning = true;
+
+            if (RepositonTimer <= 0) {
+                Repositioning = false;
+                RepositonTimer = RepositionFrames;
+            }
+
+            if (Repositioning) {
+                RepositonTimer--;
                 float xPosTarget = currentPlayerPosition.x - currentPosition.x;
                 xPosTarget *= -1; // reverse direction
                 return new Vector2(xPosTarget, 0); // move horizontally away from the player to return to optimal range
             }
+
+            return transform.position;
         }
 
         return currentPlayerPosition;
