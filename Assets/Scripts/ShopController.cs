@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class ShopController : MonoBehaviour {
     public static ShopController Instance;
 
     private Canvas ShopCanvas;
+
+    public event Action<bool> ShopOpen;
 
     public void Awake() {
         ShopCanvas = GetComponent<Canvas>();
@@ -38,14 +41,25 @@ public class ShopController : MonoBehaviour {
 
     public void OpenShop()
     {
-          ShopCanvas.enabled = true;
+        ShopOpen?.Invoke(true);
+        ShopCanvas.enabled = true;
     }
     public void CloseShop()
     {
+        ShopOpen?.Invoke(true);
         ShopCanvas.enabled = true;
     }
     public void ToggleShop()
     {
+        ShopOpen?.Invoke(!ShopCanvas.enabled);
         ShopCanvas.enabled = !ShopCanvas.enabled;
+    }
+    public bool GetOpen()
+    {
+        if(ShopCanvas != null)
+        {
+            return ShopCanvas.enabled;
+        }
+        return false;
     }
 }
