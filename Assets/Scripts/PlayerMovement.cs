@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
             child.transform.parent = transform;
             child.transform.localPosition = TreadObj.transform.localPosition;
         }
+
     }
 
     float GetHorizontalMovement() {
