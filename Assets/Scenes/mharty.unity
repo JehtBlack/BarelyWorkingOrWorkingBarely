@@ -133,6 +133,8 @@ GameObject:
   - component: {fileID: 679338480}
   - component: {fileID: 679338479}
   - component: {fileID: 679338482}
+  - component: {fileID: 679338484}
+  - component: {fileID: 679338483}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -475,10 +477,67 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!66 &679338483
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679338477}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 679338482}
+    m_ColliderPaths:
+    - - X: 25599971
+        Y: -31999998
+      - X: 25599971
+        Y: -19200000
+      - X: -38400000
+        Y: -19200029
+      - X: -38399971
+        Y: -31999998
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 2.5599942, y: -3.1999998}
+      - {x: 2.5599942, y: -1.9200001}
+      - {x: -3.8400002, y: -1.9200058}
+      - {x: -3.8399944, y: -3.1999998}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.000005
+--- !u!50 &679338484
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679338477}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &800856148
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +606,7 @@ MonoBehaviour:
   TreadObj: {fileID: 3900533942341377338, guid: e7d15935a2b622e4cbe1b78b78245ab1,
     type: 3}
   MovementSpeed: 20
+  Health: 100
 --- !u!114 &1177799887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,12 +815,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1426041807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f71a1b040d776f42a35ac95602e3e4c, type: 3}
+  m_Script: {fileID: 11500000, guid: a73a4b86c294c874386ae41b9e31fdfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AggroRadius: 3.05
-  _Power: 0
-  _AttackRadius: 0.5
+  Ranged: 1
+  _AggroRadius: 2.83
+  DeaggroRange: 5
+  Power: 0
+  _AttackRadius: 1.85
+  _OptimalRange: 1.5
+  _MovementSpeed: 1
+  PatrolPoints:
+  - {x: 2.99, y: 0}
+  - {x: 5.46, y: 1.05}
+  BulletObj: {fileID: 0}
 --- !u!114 &1426041809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,6 +841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203f867ea52d58a4da72e56880322902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 10
 --- !u!4 &1426041810
 Transform:
   m_ObjectHideFlags: 0
@@ -781,7 +850,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426041807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.11, y: -1.32, z: 0}
+  m_LocalPosition: {x: 4.39, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1248,7 +1317,7 @@ PrefabInstance:
     - target: {fileID: 6693367883316413445, guid: 5f8849d6209ef2f4eabfabe807d59abc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.34
+      value: 2.73
       objectReference: {fileID: 0}
     - target: {fileID: 6693367883316413445, guid: 5f8849d6209ef2f4eabfabe807d59abc,
         type: 3}
