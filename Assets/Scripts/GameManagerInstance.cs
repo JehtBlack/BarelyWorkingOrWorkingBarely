@@ -85,7 +85,7 @@ public class GameManagerInstance : MonoBehaviour {
         FloorPlane,
         ColourVision,
         Cannon,
-        TestItem2,
+        Hearing,
         TestItem3,
         TestItem4
     }
@@ -108,7 +108,7 @@ public class GameManagerInstance : MonoBehaviour {
         { UnlockStateID.ColourVision, new Unlockable(new [] { "You like colour right?" }, 100) },
         { UnlockStateID.FloorPlane, new Unlockable(new [] { "Floors are important aren't they?" }, 100) },
         { UnlockStateID.Cannon, new Unlockable(new [] { "Shooty Fun Times" }, 100) },
-        { UnlockStateID.TestItem2, new Unlockable(new [] { "Tests item 2" }, 200) },
+        { UnlockStateID.Hearing, new Unlockable(new [] { "You want ears right?" }, 0) },
         { UnlockStateID.TestItem3, new Unlockable(new [] { "Tests item 3" }, 300) },
         { UnlockStateID.TestItem4, new Unlockable(new [] { "Tests item 4" }, 400) },
     };
