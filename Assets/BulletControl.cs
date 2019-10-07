@@ -25,10 +25,10 @@ public class BulletControl : MonoBehaviour
         //m_Rigidbody2D.velocity = targetVelocity * Time.deltaTime;
     }
     
-    public void SetDirection(Transform t, bool IsLeft)
+    public void SetDirection(Vector2 dir)
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
-        m_Rigidbody2D.velocity = IsLeft ? t.right * speed: -t.right * speed;
+        m_Rigidbody2D.velocity = dir * speed;
     }
 
 

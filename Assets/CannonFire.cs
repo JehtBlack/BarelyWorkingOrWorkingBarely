@@ -22,14 +22,20 @@ public class CannonFire : MonoBehaviour, IWeapon
             UseWeapon();
     }
 
+    public delegate bool GetFacingRight();
+
+    public GetFacingRight FacingRightCallback;
+
     public void UseWeapon()
     {
         if(BulletObj != null)
         {
             BulletControl bulletInstance = Instantiate(BulletObj, transform.position, Quaternion.Euler(new Vector3(0, 0, 1))).GetComponent<BulletControl>();
-
+            Vector2 dir = Vector2.right;
+            if (!FacingRightCallback())
+                dir *= -1;
             if (bulletInstance != null)
-                bulletInstance.SetDirection(transform, false);
+                bulletInstance.SetDirection(dir);
             
 
             //if (bulletBody != null) {

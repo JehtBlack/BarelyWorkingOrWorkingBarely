@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour, IDamageable {
     [SerializeField]
     private GameObject TreadObj;
+    [SerializeField]
+    private GameObject CannonObj;
 
     delegate float GetHorizontalMoventDelegate();
 
@@ -43,6 +45,12 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
             child.transform.localPosition = TreadObj.transform.localPosition;
         }
 
+        if (id == GameManagerInstance.UnlockStateID.Cannon && !oldState && newState) {
+            GameObject child = Instantiate(CannonObj) as GameObject;
+            child.transform.parent = transform;
+            child.transform.localPosition = CannonObj.transform.localPosition;
+            child.GetComponentInChildren<CannonFire>().FacingRightCallback = GetComponent<CharacterController2D>().FacingRight;
+        }
     }
 
     float GetHorizontalMovement() {
