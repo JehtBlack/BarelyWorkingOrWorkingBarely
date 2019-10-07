@@ -31,6 +31,14 @@ public class BulletControl : MonoBehaviour
         m_Rigidbody2D.velocity = dir * speed;
     }
 
+    void OnCollisionEnter2D(Collision2D col) {
 
+        IDamageable other = col.gameObject.GetComponent<IDamageable>();
+        if (other != null) {
+            other.Damage(power);
+        }
+
+        Destroy(gameObject);
+    }
 }
 
