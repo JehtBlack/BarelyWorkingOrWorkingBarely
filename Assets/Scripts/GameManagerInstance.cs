@@ -84,7 +84,7 @@ public class GameManagerInstance : MonoBehaviour {
         Possession = 0,
         FloorPlane,
         ColourVision,
-        TestItem1,
+        Cannon,
         TestItem2,
         TestItem3,
         TestItem4
@@ -107,7 +107,7 @@ public class GameManagerInstance : MonoBehaviour {
         { UnlockStateID.Possession, new Unlockable(new [] { "Possess the little guy" }, 0) },
         { UnlockStateID.ColourVision, new Unlockable(new [] { "You like colour right?" }, 100) },
         { UnlockStateID.FloorPlane, new Unlockable(new [] { "Floors are important aren't they?" }, 100) },
-        { UnlockStateID.TestItem1, new Unlockable(new [] { "Tests item 1" }, 100) },
+        { UnlockStateID.Cannon, new Unlockable(new [] { "Shooty Fun Times" }, 100) },
         { UnlockStateID.TestItem2, new Unlockable(new [] { "Tests item 2" }, 200) },
         { UnlockStateID.TestItem3, new Unlockable(new [] { "Tests item 3" }, 300) },
         { UnlockStateID.TestItem4, new Unlockable(new [] { "Tests item 4" }, 400) },
