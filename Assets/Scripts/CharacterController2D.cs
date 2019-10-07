@@ -60,6 +60,9 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
+    public bool FacingRight() {
+        return m_FacingRight;
+    }
 
 	public void Move(float move, bool crouch, bool jump)
 	{
