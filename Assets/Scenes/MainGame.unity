@@ -45110,13 +45110,49 @@ PrefabInstance:
       propertyPath: Conversation.Array.data[2]
       value: Hmmm you're in a spot of bother, can't move, can't see properly. I got
         what you need but it's gonna cost you. Find me some of your alien tech and
-        I'll sell you stuff. To get you started I'll sell you these mighty find tank
+        I'll sell you stuff. To get you started I'll sell you these mighty fine tank
         tracks to get you moving for the low price of nothing!!!
       objectReference: {fileID: 0}
     - target: {fileID: 1767148431869409247, guid: dc16df7188238584dbfb7fa9679eff93,
         type: 3}
       propertyPath: CanConverse
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1767148432177333607, guid: dc16df7188238584dbfb7fa9679eff93,
         type: 3}
@@ -45126,42 +45162,6 @@ PrefabInstance:
     - target: {fileID: 1767148432177333607, guid: dc16df7188238584dbfb7fa9679eff93,
         type: 3}
       propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1767148431005314631, guid: dc16df7188238584dbfb7fa9679eff93,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855683412, guid: dc16df7188238584dbfb7fa9679eff93, type: 3}
-      propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -45483,7 +45483,7 @@ PrefabInstance:
     - target: {fileID: 6047818340253726624, guid: e136b0074086b0842a2ec2e9de584530,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -294186.72
+      value: -297064.25
       objectReference: {fileID: 0}
     - target: {fileID: 134288884, guid: e136b0074086b0842a2ec2e9de584530, type: 3}
       propertyPath: m_Camera
