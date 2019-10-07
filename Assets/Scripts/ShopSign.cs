@@ -11,9 +11,11 @@ public class ShopSign : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Shop") && CanOpenShop)
+        if (Input.GetButtonDown("Shop") && CanOpenShop) {
             ShopController.Instance.ToggleShop();
 
+            GameManagerInstance.Instance.CacheWorldState(transform.position);
+        }
     }
 
 

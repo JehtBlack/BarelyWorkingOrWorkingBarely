@@ -87,6 +87,6 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
     }
 
     void Kill() {
-
+        GameManagerInstance.Instance.ResetToLastCheckpoint();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 // Wrapper for locked data/delegates, data that can only be accessed if the dependency is unlocked in the GameManagerInstance
@@ -53,6 +54,14 @@ public class RefDependsOn<Value> : DependsOn where Value : class {
     }
 }
 
+
+class WorldState {
+    public float PlayerHealth;
+    public List<bool> UnlockStates;
+    public ulong PlayerCurrency;
+    public Dictionary<GameManagerInstance.UnlockStateID, bool> Settings;
+    public Vector2 CheckPointPosition;
+}
 
 public class Unlockable
 {
@@ -112,6 +121,8 @@ public class GameManagerInstance : MonoBehaviour {
 
     public event Action<ulong> CurrencyChanged;
     public event Action<UnlockStateID, bool /*oldState*/, bool /*newState*/> UnlockStateChanged;
+
+    private WorldState LastWorldState;
 
     // Editor stuff
     [Header("Debug Settings")]
@@ -198,6 +209,38 @@ public class GameManagerInstance : MonoBehaviour {
         SfxrSynth synth = new SfxrSynth();
         synth.parameters.SetSettingsString(SoundEffectSettings[sfx]);
         return synth;
+    }
+
+    public void CacheWorldState(Vector2 checkpointPosition) {
+        WorldState caching = new WorldState();
+        float? hp = GameObject.FindWithTag("Player").GetComponent<IDamageable>()?.CurrentHealth();
+        caching.PlayerHealth = hp.HasValue ? hp.Value : 100.0f;
+        caching.PlayerCurrency = Currency;
+        caching.UnlockStates = UnlockStates;
+        caching.Settings = SettingController.Instance.Settables;
+        caching.CheckPointPosition = checkpointPosition;
+
+        LastWorldState = caching;
+    }
+
+    public void ResetToLastCheckpoint() {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+
+        Currency = LastWorldState.PlayerCurrency;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        player.GetComponent<IDamageable>()?.HealAmount(LastWorldState.PlayerHealth, true);
+        player.transform.position = LastWorldState.CheckPointPosition;
+
+        for (int i = 0; i < LastWorldState.UnlockStates.Count; ++i) {
+            UnlockStateID id = (UnlockStateID)i;
+            SetUnlockState(id, LastWorldState.UnlockStates[i]);
+        }
+
+        foreach (var setting in LastWorldState.Settings) {
+            SettingController.Instance.SetSettable(setting.Key, setting.Value);
+        }
     }
 
     // Start is called before the first frame update
