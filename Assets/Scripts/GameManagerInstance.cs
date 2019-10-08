@@ -82,12 +82,12 @@ public class GameManagerInstance : MonoBehaviour {
     // helper defines
     public enum UnlockStateID : ushort {
         Possession = 0,
-        FloorPlane,
+        Jumping,
         ColourVision,
         Cannon,
         Hearing,
-        TestItem3,
-        TestItem4
+        Music1,
+        Music2
     }
 
     public enum SoundEffect {
@@ -104,13 +104,13 @@ public class GameManagerInstance : MonoBehaviour {
 
     [NonSerialized]
     private Dictionary<UnlockStateID, Unlockable> UnlockCosts = new Dictionary<UnlockStateID, Unlockable> {
-        { UnlockStateID.Possession, new Unlockable(new [] { "Possess the little guy" }, 0) },
-        { UnlockStateID.ColourVision, new Unlockable(new [] { "You like colour right?" }, 100) },
-        { UnlockStateID.FloorPlane, new Unlockable(new [] { "Floors are important aren't they?" }, 100) },
-        { UnlockStateID.Cannon, new Unlockable(new [] { "Shooty Fun Times" }, 100) },
-        { UnlockStateID.Hearing, new Unlockable(new [] { "You want ears right?" }, 0) },
-        { UnlockStateID.TestItem3, new Unlockable(new [] { "Tests item 3" }, 300) },
-        { UnlockStateID.TestItem4, new Unlockable(new [] { "Tests item 4" }, 400) },
+        { UnlockStateID.Possession, new Unlockable(new [] { "[Movement] How about some wheels" }, 0) },
+        { UnlockStateID.ColourVision, new Unlockable(new [] { "[Colour] Grey is pretty boring" }, 100) },
+        { UnlockStateID.Jumping, new Unlockable(new [] { "[Jumping] Gotta get over stuff somehow" }, 100) },
+        { UnlockStateID.Cannon, new Unlockable(new [] { "[Gun] Shooty Fun Times" }, 100) },
+        { UnlockStateID.Hearing, new Unlockable(new [] { "[Music/Sfx] The silence is deafening" }, 0) },
+        { UnlockStateID.Music1, new Unlockable(new [] { "[Extra Music] Switch up the tunes" }, 300) },
+        { UnlockStateID.Music2, new Unlockable(new [] { "[More Extra Music] Brutal" }, 400) },
     };
 
     [SerializeField] 
@@ -239,6 +239,11 @@ public class GameManagerInstance : MonoBehaviour {
         CurrencyChanged = null;
 
         Resetting = true;
+    }
+
+    public void KillPlayer() {
+        IDamageable player = GameObject.FindWithTag("Player").GetComponent<IDamageable>();
+        player.Damage(player.CurrentHealth());
     }
 
     // Start is called before the first frame update

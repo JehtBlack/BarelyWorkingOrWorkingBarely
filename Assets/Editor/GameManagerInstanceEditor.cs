@@ -11,6 +11,9 @@ public class GameManagerInstanceEditor : Editor
         GameManagerInstance manager = (GameManagerInstance)target;
         DrawDefaultInspector();
 
+        if (GUILayout.Button("Kill player"))
+            manager.KillPlayer();
+
         if (GUILayout.Button("Toggle Selected Feature"))
             manager.SetUnlockState(manager.UnlockID, !manager.GetUnlockState(manager.UnlockID));
     }

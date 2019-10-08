@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
     [Range(0, 100.0f)] public float MovementSpeed = 10.0f;
 
 
-    private bool Jump = false;
+    private ValDependsOn<bool> Jump = new ValDependsOn<bool>(GameManagerInstance.UnlockStateID.Jumping, false);
     private float HorizontalMove = 0.0f;
 
     [SerializeField]
@@ -69,17 +69,17 @@ public class PlayerMovement : MonoBehaviour, IDamageable {
         HorizontalMove = moveValue.HasValue ? moveValue.Value : 0;
         if (Input.GetButtonDown("Jump"))
         {
-            Jump = true;
+            Jump.WrappedValue = true;
         }
 
         if (Input.GetButtonDown("Fire1"))
             FireWeapon.WrappedValue?.Invoke();
     }
 
-    private void FixedUpdate()
-    {
-        Controller2D.Move((HorizontalMove * Time.fixedDeltaTime), false, Jump);
-        Jump = false;
+    private void FixedUpdate() {
+        bool jump = Jump.IsAvailable() ? Jump.WrappedValue.Value : false;
+        Controller2D.Move((HorizontalMove * Time.fixedDeltaTime), false, jump);
+        Jump.WrappedValue = false;
     }
 
     public float CurrentHealth() {
